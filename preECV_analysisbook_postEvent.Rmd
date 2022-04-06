@@ -475,7 +475,7 @@ for(i in 1:length(UserID))
 #Step 1: Create the dataframes of relevance:
     
 ## DATA RELATED TO STUDY DURATION
-  df_window = df %>% rowwise() %>% filter(any(data.measurement_timestamp >=EventInclusion & data.measurement_timestamp <= EventExclusion))
+  df_window = df %>% rowwise() %>% filter(any(data.measurement_timestamp >Event1 & data.measurement_timestamp <= EventExclusion))
   
   
  data=as.data.frame(table(df_window$data.context.symptoms.0,df_window$data.indicator))
@@ -535,7 +535,7 @@ Symptoms_nonAF = subset(df_window, data.indicator.af== "0")
 Symptoms_nonAF = sum(Symptoms_nonAF$data.context.symptoms.sym, na.rm = "TRUE")
 Symptoms_qual = subset(df_window, data.indicator.af== "99")
 Symptoms_qual = sum( df_window$data.context.symptoms.sym, na.rm = "TRUE")
-Total_days = as.numeric(EventExclusion - EventInclusion)+1
+Total_days = as.numeric(EventExclusion- Event1)
 Total_days_motivation_metbE1 = sum(table(df_window$data.measurement_timestamp)>=Enter.X1)
 compliance_window = round(100*sum(nrow(df_window))/(Total_days*Enter.X1),2)
 motivation_window = round(sum((table(df_window$data.measurement_timestamp)>=Enter.X1))*100/Total_days,2)
@@ -926,7 +926,7 @@ summary <- data.frame(UserID[i],EventInclusion, EventExclusion, Event1, Total_da
  
 slide7 <- rbind(slide7,summary)
 }
-write_xlsx(slide7, "/Volumes/GoogleDrive/Shared drives/9. Clinical/9.6 Data reporting/AZM/PRE-ECV /ggplt/slide7.xlsx")
+write_xlsx(slide7, "/Volumes/GoogleDrive/Shared drives/9. Clinical/9.6 Data reporting/AZM/PRE-ECV /ggplt/summary_post_event.xlsx")
  #write.csv(slide7, file= "/Volumes/GoogleDrive/Shared drives/9. Clinical/9.6 Data reporting/AZM/PRE-ECV /ggplt/slide7.csv")
 
 dev.off()
